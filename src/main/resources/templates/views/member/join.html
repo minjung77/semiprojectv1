@@ -4,29 +4,44 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 
+<head>
+    <style>
+        .error-message {
+            color: #dc3545;
+            font-size: 0.95em;
+            margin: 10px 0;
+            display: none;
+        }
+    </style>
+</head>
     <th:block layout:fragment="content">
         <main id="content">
             <h2>회원가입</h2>
-            <form method="post" name="joinfrm" id="joinfrm" onsubmit="return joinform()">
-                <div>
-                    <label for="userid">아이디</label>
-                    <input type="text" name="userid" id="userid">
+            <form method="post" name="joinfrm" id="joinfrm" novalidate>
+                <div class="form-floating">
+                    <input type="text" name="userid" id="userid" class="form-control" placeholder="아이디" required minlength="6" maxlength="18">
+                    <label for="userid" form-label>아이디</label>
+                    <div id="useridError" class="error-message"></div>
                 </div>
-                <div>
+                <div class="form-floating">
+                    <input type="password" name="passwd" class="form-control" id="passwd" placeholder="비밀번호" required minlength="6" maxlength="18">
                     <label for="passwd">비밀번호</label>
-                    <input type="password" name="passwd" id="passwd">
+                    <div id="passwdError" class="error-message"></div>
                 </div>
-                <div>
+                <div class="form-floating">
+                    <input type="password" name="reppasswd" class="form-control" id="reppasswd" placeholder="비밀번호 확인" required minlength="6" maxlength="18">
                     <label for="reppasswd">비밀번호 확인</label>
-                    <input type="password" name="reppasswd" id="reppasswd">
+                    <div id="reppasswdError" class="error-message"></div>
                 </div>
-                <div>
+                <div class="form-floating">
+                    <input type="text" name="name" class="form-control" id="name" placeholder="이름" required>
                     <label for="name">이름</label>
-                    <input type="text" name="name" id="name">
+                    <div id="nameError" class="error-message"></div>
                 </div>
-                <div>
+                <div class="form-floating">
+                    <input type="email" name="email" class="form-control" id="email" placeholder="이메일" required>
                     <label for="email">이메일</label>
-                    <input type="text" name="email" id="email">
+                    <div id="emailError" class="error-message"></div>
                 </div>
 
                 <div>
@@ -34,8 +49,8 @@
                 </div>
 
                 <div>
-                    <button type="submit">입력완료</button>
-                    <button type="reset">다시입력</button>
+                    <button type="submit" class="btn btn-primary">입력완료</button>
+                    <button type="reset" class="btn btn-danger">다시입력</button>
                 </div>
             </form>
         </main>
@@ -48,33 +63,25 @@
             joinfrm.addEventListener("submit", function (e){
                 e.preventDefault();
 
-                let joinfrm = document.forms['joinfrm'];
+                let isValid = true;
 
-                if(joinfrm.userid.value===''){
-                    alert('아이디를 입력하세요.');
-                    return false;
-                }
-                else if(joinfrm.passwd.value===''){
-                    alert('비밀번호를 입력하세요.');
-                    return false;
-                }
-                else if(joinfrm.reppasswd.value===''){
-                    alert('비밀번호확인을 입력하세요.');
-                    return false;
-                }
-                else if(joinfrm.name.value===''){
-                    alert('이름을 입력하세요.');
-                    return false;
-                }
-                else if(joinfrm.email.value===''){
-                    alert('이메일을 입력하세요.');
-                    return false;
-                }
-                else if(joinfrm.passwd.value!==joinfrm.reppasswd.value){
-                    alert('비밀번호 확인이 틀렸습니다. 다시 입력해주세요.');
-                    return false;
-                }
-                joinfrm.submit();//회원정보를 정상적으로 작성했다면
+                //모든 error-message 요소의 내용을 초기화
+                document.querySelectorAll(".error-message")
+                    .forEach(error => error.textContent='');
+
+                //회원가입 폼 안의 모든 input 요소 수집
+                const inputs = joinfrm.querySelectorAll('input')
+
+                inputs.forEach(input => {
+                    if(!input.value){
+                        let error = document.getElementById(`${input.id}Error`);
+                        error.textContent=`필수 항목입니다.`;
+                        error.style.display='block';
+                        isValid=false;
+                    }
+                });
+
+                if(isValid) joinfrm.submit;
             });
         </script>
     </th:block>
