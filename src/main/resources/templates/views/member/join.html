@@ -17,8 +17,8 @@
                     <input type="password" name="passwd" id="passwd">
                 </div>
                 <div>
-                    <label for="password">비밀번호 확인</label>
-                    <input type="password" name="password" id="password">
+                    <label for="reppasswd">비밀번호 확인</label>
+                    <input type="password" name="reppasswd" id="reppasswd">
                 </div>
                 <div>
                     <label for="name">이름</label>
@@ -43,7 +43,11 @@
 
     <th:block layout:fragment="script">
         <script>
-            function joinform(){
+            const joinfrm = document.querySelector('#joinfrm');
+
+            joinfrm.addEventListener("submit", function (e){
+                e.preventDefault();
+
                 let joinfrm = document.forms['joinfrm'];
 
                 if(joinfrm.userid.value===''){
@@ -54,7 +58,7 @@
                     alert('비밀번호를 입력하세요.');
                     return false;
                 }
-                else if(joinfrm.password.value===''){
+                else if(joinfrm.reppasswd.value===''){
                     alert('비밀번호확인을 입력하세요.');
                     return false;
                 }
@@ -66,12 +70,12 @@
                     alert('이메일을 입력하세요.');
                     return false;
                 }
-                else if(joinfrm.passwd.value!==joinfrm.password.value){
+                else if(joinfrm.passwd.value!==joinfrm.reppasswd.value){
                     alert('비밀번호 확인이 틀렸습니다. 다시 입력해주세요.');
                     return false;
                 }
-                return true;//회원정보를 정상적으로 작성했다면
-            }
+                joinfrm.submit();//회원정보를 정상적으로 작성했다면
+            });
         </script>
     </th:block>
 </html>
