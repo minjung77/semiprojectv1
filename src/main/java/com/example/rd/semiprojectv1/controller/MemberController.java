@@ -28,11 +28,21 @@ public class MemberController {
     // 상태코드, HTTP 헤더, HTTP 본문 등을 명시적으로 설정 가능
     @PostMapping("/join")
     public ResponseEntity<?> joinok(MemberDTO member) {
-        ResponseEntity<?> response = ResponseEntity.badRequest().build();
+        // 회원 가입 처리시 기타 오류 발생에 대한 응답코드 설정
+        ResponseEntity<?> response = ResponseEntity.internalServerError().build();
 
-        if(memberService.newMember(member))
+        try{
+            // 정상 처리시 상태코드 200으로 응답
+            memberService.newMember(member);
             response = ResponseEntity.ok().build();
-
+        }catch(IllegalStateException e){
+            // 비 정상 처리시 상태코드 400으로 응답 - 클라이언트 잘못
+            // 중복 아이디나 중복 이메일 사용시
+            response = ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            // 비정상 처리시 상태코드 500으로 응답 - 서버 잘못
+            e.printStackTrace();
+        }
         return response;
     }
     @GetMapping("/login")
