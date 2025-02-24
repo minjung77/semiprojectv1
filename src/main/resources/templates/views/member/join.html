@@ -10,7 +10,7 @@
             color: #dc3545;
             font-size: 0.95em;
             margin: 10px 0;
-            display: none;
+            /*display: none;*/
         }
         #joinfrm{
             max-width: 450px;
@@ -28,27 +28,22 @@
                 <div class="form-floating my-2">
                     <input type="text" name="userid" id="userid" class="form-control" placeholder="아이디" required minlength="6" maxlength="18">
                     <label for="userid" form-label>아이디</label>
-                    <div id="useridError" class="error-message"></div>
                 </div>
                 <div class="form-floating my-2">
                     <input type="password" name="passwd" class="form-control" id="passwd" placeholder="비밀번호" required minlength="6" maxlength="18">
                     <label for="passwd">비밀번호</label>
-                    <div id="passwdError" class="error-message"></div>
                 </div>
                 <div class="form-floating my-2">
                     <input type="password" name="reppasswd" class="form-control" id="reppasswd" placeholder="비밀번호 확인" required minlength="6" maxlength="18">
                     <label for="reppasswd">비밀번호 확인</label>
-                    <div id="reppasswdError" class="error-message"></div>
                 </div>
                 <div class="form-floating my-2">
                     <input type="text" name="name" class="form-control" id="name" placeholder="이름" required>
                     <label for="name">이름</label>
-                    <div id="nameError" class="error-message"></div>
                 </div>
                 <div class="form-floating my-2">
                     <input type="email" name="email" class="form-control" id="email" placeholder="이메일" required>
                     <label for="email">이메일</label>
-                    <div id="emailError" class="error-message"></div>
                 </div>
 
                 <div class="my-2 d-flex justify-content-center">
@@ -67,56 +62,58 @@
         </main>
     </th:block>
 
-    <th:block layout:fragment="script">
-        <script>
-            const joinfrm = document.querySelector('#joinfrm');
+<th:block layout:fragment="script">
+    <script>
+        const joinfrm = document.querySelector('#joinfrm');
 
-            const errorMessages = [
-                '아이디는 소문자로 시작하고, 영문자와 숫자만 사용 가능합니다 (최소 6자 ~ 최대 18자)',
-                '비밀번호는 영문 대소문자, 숫자, 특수문자를 포함해야 합니다 (최소 6자 ~ 최대 18자)',
-                '비밀번호가 일치하지 않습니다',
-                '이름은 한글 또는 영문자만 사용 가능합니다',
-                '올바른 이메일 형식이 아닙니다',
-                '자동가입방지를 확인하세요'];
-            const patterns = [
-                /^[a-z][a-z0-9]{5,17}$/,
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,18}$/,
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,18}$/,
-                /^[가-힣]{2,5}|[a-zA-Z]{2,10}$/,
-                /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/
-            ];
+        const errorMessages = [
+            '아이디는 소문자로 시작하고, 영문자와 숫자만 사용 가능합니다 (최소 6자 ~ 최대 18자)',
+            '비밀번호는 영문 대소문자, 숫자, 특수문자를 포함해야 합니다 (최소 6자 ~ 최대 18자)',
+            '비밀번호가 일치하지 않습니다',
+            '이름은 한글 또는 영문자만 사용 가능합니다',
+            '올바른 이메일 형식이 아닙니다',
+            '자동가입방지를 확인하세요'];
+        const patterns = [
+            /^[a-z][a-z0-9]{5,17}$/,
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,18}$/,
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,18}$/,
+            /^[가-힣]{2,5}|[a-zA-Z]{2,10}$/,
+            /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/
+        ];
 
-            joinfrm.addEventListener("submit", (e) => {
-                e.preventDefault();
+        joinfrm.addEventListener("submit", (e) => {
+            e.preventDefault();
 
-                let isValid = true;
+            let isValid = true;
 
-                //모든 error-message 요소의 내용을 초기화
-                document.querySelectorAll(".error-message")
-                    .forEach(error => error.textContent='');
+            //모든 error-message 요소의 내용을 초기화
+            document.querySelectorAll(".error-message")
+                .forEach(error => error.textContent='');
 
-                //회원가입 폼 안의 모든 input 요소 수집
-                const inputs = joinfrm.querySelectorAll('input');
+            //회원가입 폼 안의 모든 input 요소 수집
+            const inputs = joinfrm.querySelectorAll('input');
 
-                inputs.forEach((input, idx) => {//input 요소를 하나씩 검사
-                    if (!input.checkValidity()) {//html5 태그를 이용한 유효성 검사
-                        let error = document.getElementById(`${input.id}Error`);//에러메세지 요서 선택
-                        error.textContent = errorMessages[idx];//에러 메세지 지정
-                        error.style.display = 'block';//에러 메세지 표시
-                        isValid = false;
-                    }
-                });
-
-                //일치여부 검사
-                if(inputs[1].value !== inputs[2].values){
-                    let error = document.getElementById('reppasswdError')
-                    error.textContent = errorMessages[2];
-                    error.style.display = 'block';
+            inputs.forEach((input, idx) => {//input 요소를 하나씩 검사
+                if (!input.checkValidity()) {//html5 태그를 이용한 유효성 검사
+                    let error = document.createElement('div');//div 요소 생성
+                    error.className = 'error-message';//생성한 div 요소에 클래스이름 지정
+                    error.textContent = errorMessages[idx];//에러 메세지 지정
+                    input.parentElement.appendChild(error);//지정한 위치에 자식 요소로 추가
                     isValid = false;
                 }
-
-                if(isValid) joinfrm.submit;
             });
-        </script>
-    </th:block>
+
+            //일치여부 검사
+            if(inputs[1].value !== inputs[2].values){
+                let error = document.createElement('div');
+                error.className = 'error-message';
+                error.textContent = errorMessages[2];
+                inputs[2].parentElement.appendChild(error)
+                isValid = false;
+            }
+
+            if(isValid) joinfrm.submit;
+        });
+    </script>
+</th:block>
 </html>
