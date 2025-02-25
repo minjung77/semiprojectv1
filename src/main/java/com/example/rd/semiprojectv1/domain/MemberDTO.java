@@ -8,7 +8,6 @@ import lombok.Data;
 public class MemberDTO {
     private String userid;
     private String passwd;
-    private String reppasswd;
     private String name;
     private String email;
     
