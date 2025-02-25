@@ -79,6 +79,7 @@ public class MemberController {
         }
         return response;
     }
+
     @GetMapping("/myinfo")
     public String info(HttpSession session) {
         String returnUrl = "views/member/login";
@@ -90,4 +91,13 @@ public class MemberController {
         }
         return returnUrl;
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();//세션 제거
+        return "redirect:/";
+    }
+
 }
+
+
