@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -48,8 +49,14 @@ public class MemberController {
         }
         return response;
     }
+
     @GetMapping("/login")
-    public String loginok(MemberDTO member, HttpSession session) {
+    public String login() {
+        return "views/member/login";
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginok(MemberDTO member, HttpSession session) {
         // 회원 가입 처리시 기타 오류 발생에 대한 응답코드 설정
         ResponseEntity<?> response = ResponseEntity.internalServerError().build();
 
@@ -70,10 +77,17 @@ public class MemberController {
             // 비정상 처리시 상태코드 500으로 응답 - 서버 잘못
             e.printStackTrace();
         }
-        return "views/member/login";
+        return response;
     }
-    @GetMapping("/info")
-    public String info() {
-        return "views/member/myinfo";
+    @GetMapping("/myinfo")
+    public String info(HttpSession session) {
+        String returnUrl = "views/member/login";
+
+        //세션 변수가 생성되어 있다면 myinfo로 이동 가능.
+        if(session.getAttribute("loginUser") != null) {
+            returnUrl = "views/member/myinfo";
+            System.err.println("asdfasdf         "+returnUrl);
+        }
+        return returnUrl;
     }
 }
