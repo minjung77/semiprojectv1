@@ -12,4 +12,10 @@
         where ${findtype} like concat('%', #{findkey}, '%')
         order by bno desc limit #{stnum}, #{pageSize}
     </select>
+
+    <select id="countFindBoard" parameterType="int">
+        select ceil(count(bno)/#{pageSize}) cntpg
+        from boards
+        where ${findtype} like concat('%', #{findkey}, '%')
+    </select>
 </mapper>
