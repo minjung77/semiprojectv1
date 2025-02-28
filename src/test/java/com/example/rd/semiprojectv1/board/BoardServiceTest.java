@@ -70,4 +70,15 @@ public class BoardServiceTest {
         //Then
         assertThat(results).isGreaterThan(0); // 결과 갯수 확인
     }
+
+    @Test
+    @DisplayName("BoardService readOne test")
+    public void readOneTest() {
+        int bno = 3000;
+
+        Board result = boardService.readOneBoard(bno);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getUserid()).isNotNull();
+    }
 }

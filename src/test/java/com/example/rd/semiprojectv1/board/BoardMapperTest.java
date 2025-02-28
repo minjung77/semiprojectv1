@@ -1,5 +1,6 @@
 package com.example.rd.semiprojectv1.board;
 
+import com.example.rd.semiprojectv1.domain.Board;
 import com.example.rd.semiprojectv1.domain.BoardDTO;
 import com.example.rd.semiprojectv1.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -80,5 +81,19 @@ public class BoardMapperTest {
         //Then : 호출되고 난 후 결과값 확인
         log.info("results : {}", results);
         assertThat(results).isGreaterThan(0); // 비어있는지 여부 확인
+    }
+
+    @Test
+    @DisplayName("BoardMapper selectOne test")
+    void selectOne(){
+        //Given : 테스트에 사용할 데이터 제공
+        int bno=3000;
+
+        Board results = boardMapper.selectOneSelect(bno);
+
+        //Then : 호출되고 난 후 결과값 확인
+        log.info("results : {}", results);
+        assertNotNull(results);// 널 여부 확인
+        assertThat(results.getUserid()).isNotNull();
     }
 }
