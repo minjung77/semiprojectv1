@@ -24,7 +24,7 @@ public class BoardController {
     @GetMapping("/list")
     public String list(Model m, @RequestParam(defaultValue = "1") int cpg, HttpServletResponse response) {
 
-        //클리이언트 캐시 제어
+        //클라이언트 캐시 제어
         response.setHeader("Chache-Control", "no-cache, no-store, must-revalidate");
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Expires", "0");
