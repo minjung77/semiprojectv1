@@ -2,6 +2,7 @@ package com.example.rd.semiprojectv1.service;
 
 import com.example.rd.semiprojectv1.domain.Board;
 import com.example.rd.semiprojectv1.domain.BoardDTO;
+import com.example.rd.semiprojectv1.domain.NewBoardDTO;
 import com.example.rd.semiprojectv1.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,6 +60,13 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void readOneView(int bno) {
         boardMapper.updateViewOne(bno);
+    }
+
+    @Override
+    public boolean newBoard(NewBoardDTO newBoardDTO) {
+        int result = boardMapper.insertBoard(newBoardDTO);
+
+        return result > 0;
     }
 
 }
