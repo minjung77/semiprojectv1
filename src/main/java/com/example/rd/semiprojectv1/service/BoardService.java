@@ -1,9 +1,6 @@
 package com.example.rd.semiprojectv1.service;
 
-import com.example.rd.semiprojectv1.domain.Board;
-import com.example.rd.semiprojectv1.domain.BoardDTO;
-import com.example.rd.semiprojectv1.domain.NewBoardDTO;
-import com.example.rd.semiprojectv1.domain.NewReplyDTO;
+import com.example.rd.semiprojectv1.domain.*;
 
 import java.util.List;
 
@@ -24,4 +21,6 @@ public interface BoardService {
     boolean newBoard(NewBoardDTO newBoardDTO);
 
     boolean newReply(NewReplyDTO newReplyDTO);
+
+    List<Reply> readReply(int bno);
 }

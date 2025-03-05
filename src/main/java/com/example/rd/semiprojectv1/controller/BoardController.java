@@ -66,6 +66,7 @@ public class BoardController {
         boardService.readOneView(bno);
 
         m.addAttribute("bd", boardService.readOneBoard(bno));
+        m.addAttribute("rps", boardService.readReply(bno));
 
         return "views/board/view";
     }
@@ -109,4 +110,6 @@ public class BoardController {
         }
         return returnPage;
     }
+
+
 }
