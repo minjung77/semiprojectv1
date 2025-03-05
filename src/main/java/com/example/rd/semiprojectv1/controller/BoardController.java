@@ -1,6 +1,7 @@
 package com.example.rd.semiprojectv1.controller;
 
 import com.example.rd.semiprojectv1.domain.NewBoardDTO;
+import com.example.rd.semiprojectv1.domain.NewReplyDTO;
 import com.example.rd.semiprojectv1.repository.BoardRepository;
 import com.example.rd.semiprojectv1.service.BoardService;
 import com.example.rd.semiprojectv1.service.GoogleRecaptchaService;
@@ -97,5 +98,15 @@ public class BoardController {
 
         }
         return response;
+    }
+
+    @PostMapping("/reply")
+    public String reply(NewReplyDTO newReplyDTO){
+        String returnPage = "redirect:/board/view?bno=" + newReplyDTO.getPno();
+
+        if(!boardService.newReply(newReplyDTO)){//댓글 insert 실패하면 에러 페이지로
+            returnPage = "redirect:/board/error?type=1";
+        }
+        return returnPage;
     }
 }
