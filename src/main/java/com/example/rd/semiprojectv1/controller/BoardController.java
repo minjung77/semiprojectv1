@@ -70,7 +70,10 @@ public class BoardController {
     }
 
     @GetMapping("/write")
-    public String write() {
+    public String write(Model m) {
+        //시스템 환경변수에 저장된 사이트키 불러옴
+        m.addAttribute("sitekey", System.getenv("recaptcha.sitekey"));
+        
         return "views/board/write";
     }
 
