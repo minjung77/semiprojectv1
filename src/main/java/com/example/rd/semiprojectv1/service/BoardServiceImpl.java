@@ -18,16 +18,19 @@ public class BoardServiceImpl implements BoardService {
     @Value("${board.page-size}") private int pageSize;
 
     @Override
-    public List<BoardDTO> readBoard(int cpg) {
+    public BoardListDTO readBoard(int cpg) {
         //cpg에 따라 시작위치 계산
         int stnum = (cpg - 1) * pageSize;
-        return boardMapper.selectBoard(stnum, pageSize);
+        int totalItems = boardMapper.countBoard();
+        List<BoardDTO> boards = boardMapper.selectBoard(stnum, pageSize);
+
+        return new BoardListDTO(cpg, totalItems, pageSize, boards);
     }
 
-    @Override
-    public int countBoard() {
-        return boardMapper.countPageBoard(pageSize);
-    }
+//    @Override
+//    public int countBoard() {
+//        return boardMapper.countPageBoard(pageSize);
+//    }
 
     @Override
     public List<BoardDTO> findBoard(int cpg, String findtype, String findkey) {

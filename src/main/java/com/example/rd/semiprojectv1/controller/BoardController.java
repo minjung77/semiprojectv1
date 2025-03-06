@@ -36,16 +36,17 @@ public class BoardController {
         //클라이언트 캐시 제어
         response.setHeader("Chache-Control", "no-cache, no-store, must-revalidate");
         response.setHeader("Pragma", "no-cache");
-        response.setHeader("Expires", "0");
+        response.setDateHeader("Expires", 0);
 
         //RequestParam에 defaultValue를 이용하면 cpg 매개변수가 전달되지 않을 경우 기본값이 1이 전달됨
 
         log.info("/board/list 호출!! ");
 
-        m.addAttribute("bds", boardService.readBoard(cpg));
-        m.addAttribute("cpg", cpg);
-        m.addAttribute("stblk", ((cpg - 1)/10) * 10 + 1);
-        m.addAttribute("cntpg", boardService.countBoard());
+        m.addAttribute("bdsdto", boardService.readBoard(cpg));
+//        m.addAttribute("bds", boardService.readBoard(cpg));
+//        m.addAttribute("cpg", cpg);
+//        m.addAttribute("stblk", ((cpg - 1)/10) * 10 + 1);
+//        m.addAttribute("cntpg", boardService.countBoard());
 
         return "views/board/list";
     }
