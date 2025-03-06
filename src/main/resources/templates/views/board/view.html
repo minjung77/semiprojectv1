@@ -41,14 +41,13 @@
             <div class="row offset-1 col-10 my-3">
                 <table class="">
                 <thead><tr><td>
-                    <button type="button" class="btn btn-light">
-                        이전게시물</button>
+                    <button type="button" class="btn btn-light">이전게시물</button>
                     &nbsp;
-                    <button type="button" class="btn btn-light">
-                        다음게시물</button></td>
+                    <button type="button" class="btn btn-light">다음게시물</button></td>
                     <td class="text-end">
-                        <button type="button" class="btn btn-primary col-3" id="newbdbtn">
-                            새글쓰기</button></td>
+                        <button type="button" class="btn btn-primary col-3" id="newbdbtn" th:if="${session.loginUser ne null}">
+                            새글쓰기
+                        </button></td>
                 </tr>
                 </thead>
                 <tbody>
@@ -158,7 +157,7 @@
 
             // 질의 문자열에서 bno 를 자바스크립트 코드에 삽입
             const bno = [[${param.bno[0]}]];
-            newbdbtn.addEventListener('click', (e) => {
+            newbdbtn?.addEventListener('click', (e) => {
                 location.href=`/board/write`;
             });
             rmvbdbtn.addEventListener('click', (e) => {
@@ -169,7 +168,7 @@
             lstbdbtn.addEventListener('click', (e) => {
                 location.href=`/board/list`;
             });
-            replybtn.addEventListener('click', (e) => {
+            replybtn?.addEventListener('click', (e) => {
                 const comment = document.querySelector('#comments');
                 const replyfrm = document.querySelector('#replyfrm');
                 if(comment.value === ''){

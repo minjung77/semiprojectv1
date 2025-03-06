@@ -46,14 +46,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>번호</th>
-                        <th>제목</th>
-                        <th>작성자</th>
-                        <th>작성일</th>
-                        <th>추천</th>
-                        <th>조회</th>
-                    </tr>
                     <tr th:each="bd : ${bdsdto.bdlist}">
                         <td th:text="${bd.bno}"></td>
                         <td><a th:href="|/board/view?bno=${bd.bno}|" th:text="${bd.title}"></a></td>
@@ -109,7 +101,8 @@
                     location.href = `/board/find?${params}`;
                 }
             });
-            newbdbtn.addEventListener('click', (e) => {
+            // 옵셔널 체이닝
+            newbdbtn?.addEventListener('click', (e) => {
                 location.href=`/board/write`;
             });
         </script>
