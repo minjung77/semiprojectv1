@@ -1,9 +1,6 @@
 package com.example.rd.semiprojectv1.board;
 
-import com.example.rd.semiprojectv1.domain.Board;
-import com.example.rd.semiprojectv1.domain.BoardDTO;
-import com.example.rd.semiprojectv1.domain.BoardListDTO;
-import com.example.rd.semiprojectv1.domain.MemberDTO;
+import com.example.rd.semiprojectv1.domain.*;
 import com.example.rd.semiprojectv1.service.BoardService;
 import com.example.rd.semiprojectv1.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -78,9 +75,11 @@ public class BoardServiceTest {
     public void readOneTest() {
         int bno = 3000;
 
-        Board result = boardService.readOneBoard(bno);
+        //when
+//        Board result = boardService.readOneBoard(bno)
+        BoardReplyDTO result = boardService.readOneBoardReply(bno);
 
         assertThat(result).isNotNull();
-        assertThat(result.getUserid()).isNotNull();
+        assertThat(result.getBd().getUserid()).isNotNull();
     }
 }

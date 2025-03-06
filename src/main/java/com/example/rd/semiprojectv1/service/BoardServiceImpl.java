@@ -5,6 +5,7 @@ import com.example.rd.semiprojectv1.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,16 @@ public class BoardServiceImpl implements BoardService {
         List<BoardDTO> boards = boardMapper.selectBoard(stnum, pageSize);
 
         return new BoardListDTO(cpg, totalItems, pageSize, boards);
+    }
+
+    @Transactional
+    @Override
+    public BoardReplyDTO readOneBoardReply(int bno) {
+        boardMapper.updateViewOne(bno);
+        Board bd = boardMapper.selectOneSelect(bno);
+        List<Reply> rps = boardMapper.selectReply(bno);
+
+        return new BoardReplyDTO(bd, rps);
     }
 
 //    @Override
@@ -53,15 +64,15 @@ public class BoardServiceImpl implements BoardService {
         return boardMapper.countFindBoard(params);
     }
 
-    @Override
-    public Board readOneBoard(int bno) {
-        return boardMapper.selectOneSelect(bno);
-    }
+//    @Override
+//    public Board readOneBoard(int bno) {
+//        return boardMapper.selectOneSelect(bno);
+//    }
 
-    @Override
-    public void readOneView(int bno) {
-        boardMapper.updateViewOne(bno);
-    }
+//    @Override
+//    public void readOneView(int bno) {
+//        boardMapper.updateViewOne(bno);
+//    }
 
     @Override
     public boolean newBoard(NewBoardDTO newBoardDTO) {
