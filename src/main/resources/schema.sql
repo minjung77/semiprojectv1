@@ -40,6 +40,7 @@ create table if not exists gallerys(
     thumbs int default 0,
     views int default 0,
     contents text not null,
+    simgname varchar(128) not null,
     primary key(gno),
     foreign key (userid) references members (userid)
 );
