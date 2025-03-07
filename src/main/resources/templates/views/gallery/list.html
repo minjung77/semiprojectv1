@@ -55,4 +55,16 @@
 
         </main>
     </th:block>
+
+    <th:block layout:fragment="script">
+        <script src="/js/gallery.js"></script>
+        <script th:inline="javascript">
+            let newbdbtn = document.querySelector("#newgalbtn");
+
+            newgalbtn?.addEventListener('click', (e) => {
+                location.href=`/gallery/write`;
+            });
+        </script>
+    </th:block>
+
 </html>

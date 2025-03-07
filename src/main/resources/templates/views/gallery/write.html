@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head><!--layout.html 의 head - styles 태그에 자동 삽입-->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+        .error-message {
+            color: #dc3545;
+            font-size: 0.95em;
+            margin: 10px 0;
+            /*display: none;*/
+        }
+        #galleryfrm {
+            max-width: 750px;
+            margin: 100px auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+    </style>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+    <th:block layout:fragment="content">
+        <main id="content">
+            <h2><i class="fa-solid fa-image"></i>이미지 갤러리 글 쓰기</h2>
+            <form method="post" name="galleryfrm" id="galleryfrm" novalidate>
+                <div class="form-floating my-2">
+                    <input type="text" name="userid" id="userid" class="form-control" placeholder="아이디" readonly value="abc123">
+                    <label for="userid" form-label>아이디</label>
+                </div>
+
+
+                <div class="form-floating my-2">
+                    <input type="text" name="title" class="form-control" id="title" placeholder="제목" required>
+                    <label for="title">제목</label>
+                </div>
+                <div class="form-floating my-2">
+                    <input type="file" name="ginames" class="form-control" id="ginames" placeholder="이미지 첨부" multiple required>
+                    <label for="ginames">이미지 첨부</label>
+                </div>
+                <div class="form-floating my-2">
+                    <textarea name="contents" class="form-control h-100" id="contents" rows="10" placeholder="본문글" required></textarea>
+                    <label for="contents">본문글</label>
+                </div>
+
+                <div class="my-2 d-flex justify-content-center">
+                    <div class="g-recaptcha" id="recaptcha" th:data-sitekey="${sitekey}"></div>
+                </div>
+
+                <div class="my-2 d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-sharp fa-solid fa-file-signature"></i> 입력완료
+                    </button>
+                    <button type="reset" class="btn btn-danger">
+                        <i class="fa-sharp fa-solid fa-eraser"></i> 다시입력
+                    </button>
+                </div>
+            </form>
+            <!-- tinymce html editor -->
+            <form method="post">
+                <textarea id="mytextarea">Hello, World!</textarea>
+            </form>
+        </main>
+    </th:block>
+
+<th:block layout:fragment="script">
+    <script src="/js/gallery.js"></script>
+    <script>
+        const galleryfrm = document.querySelector('#galleryfrm');
+
+        galleryfrm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            clearMessages(); //에러메세지 초기화
+
+            // 입력 요소 유효성 검사
+            let isValid = validgallery(galleryfrm);
+            if(isValid) submitgalleryfrm(galleryfrm);
+        });
+
+        tinymce.init({
+            selector: '#mytextarea'
+        });
+
+    </script>
+</th:block>
+</html>
