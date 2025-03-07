@@ -1,10 +1,14 @@
 package com.example.rd.semiprojectv1.service;
 
-import com.example.rd.semiprojectv1.domain.Gallery;
+import com.example.rd.semiprojectv1.domain.GalleryImage;
+import com.example.rd.semiprojectv1.domain.GalleryImageDTO;
+import com.example.rd.semiprojectv1.domain.GalleryListDTO;
+import com.example.rd.semiprojectv1.domain.GalleryViewDTO;
 import com.example.rd.semiprojectv1.repository.GalleryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,7 +20,18 @@ public class GalleryServiceImpl implements GalleryService {
     private final GalleryRepository galleryMapper;
 
     @Override
-    public List<Gallery> selectGallery() {
+    public List<GalleryListDTO> selectGallery() {
         return galleryMapper.selectGallery();
+    }
+
+    @Transactional
+    @Override
+    public GalleryImageDTO readOneGalleryImage(String gno) {
+        
+        galleryMapper.updateViewOne(gno);// 조회수 증가
+        GalleryViewDTO gal = galleryMapper.selectOneGallery(gno);// 본문 글 가져오기
+        List<GalleryImage> gi = galleryMapper.selectGalleryImages(gno);// 본문글에 포함된 이미지들 가져오기
+
+        return new GalleryImageDTO(gal, gi);
     }
 }
