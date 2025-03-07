@@ -37,9 +37,10 @@
                     <input type="text" name="title" class="form-control" id="title" placeholder="제목" required>
                     <label for="title">제목</label>
                 </div>
-                <div class="form-floating my-2">
-                    <input type="file" name="ginames" class="form-control" id="ginames" placeholder="이미지 첨부" multiple required>
-                    <label for="ginames">이미지 첨부</label>
+                <div class="my-2">
+                    <input type="file" name="ginames" class="form-control" id="ginames" multiple required>
+<!--                    <label for="ginames">이미지 첨부</label>-->
+                    <input type="hidden" name="simgname" id="simgname">
                 </div>
                 <div class="form-floating my-2">
                     <textarea name="contents" class="form-control h-100" id="contents" rows="10" placeholder="본문글" required></textarea>
@@ -77,8 +78,20 @@
             clearMessages(); //에러메세지 초기화
 
             // 입력 요소 유효성 검사
-            let isValid = validgallery(galleryfrm);
-            if(isValid) submitgalleryfrm(galleryfrm);
+            let isValid = validGallery(galleryfrm);
+
+            // 첨부한 이미지들 중에서 첫번째 이미지 파일의 이름 추출
+            // cowmeat01.jpg => cowmeat01_small.jpg
+            // cowmeat01.blabla.jpg => cowmeat01.blabla_small.jpg > 이럴 경우 어떤 식으로 할 것인지
+            const ginames = document.querySelector('#ginames')
+            const simgname = document.querySelector('#simgname')
+            const fname = ginames.files[0].name.split('.')
+            const tfname = `${fname[0]}_small.${fname[1]}`;
+            // alert(fname + '/' + tfname);
+
+            simgname.value = tfname; // 생성한 썸네일 파일명을 hidden요소에 삽입.
+
+            if(isValid) submitGalleryfrm(galleryfrm);
         });
 
         tinymce.init({
