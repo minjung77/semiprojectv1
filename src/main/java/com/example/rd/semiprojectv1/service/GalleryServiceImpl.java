@@ -37,25 +37,38 @@ public class GalleryServiceImpl implements GalleryService {
     @Transactional
     @Override
     public boolean newGalleryImage(NewGalleryDTO gal, List<MultipartFile> ginames) {
+        boolean result = false;
         // 작성한 게시글을 gallerys에 저장하고, 생성된 글 번호를 알아냄
         int gno = -999;
-        if(galleryMapper.insertGallery(gal)>0) gno = gal.getGgno();
+        try {
+            if(galleryMapper.insertGallery(gal)>0) gno = gal.getGgno();
+        }catch (Exception e){
+            throw new IllegalStateException("insertGalley 오류 발생");
+        }
         // 첨부된 파일을 업로드 처리하고
         // 알아낸 글 번호로 첨부된 파일들에 대한 정보를 db에 gallery_images 에 저장
+        List<NewGalleryImageDTO> gis = null;
         if(!ginames.isEmpty()) {// 첩부 파일이 존재한다면
-            // 업로드 처리 후 업로드된 파일들의 정보를 리스트 형태로 받아옴
-            List<NewGalleryImageDTO> gis = galleryUploadService.processUpload(ginames, gno);
+            gis = galleryUploadService.processUpload(ginames, gno);
 
             log.info("{}", gis.size());
             // 업로드된 파일의 정보를 gallery_images 테이블에 저장
             // 즉, 첨부된 파일정보를 개별 행으로 저장
-            for(NewGalleryImageDTO gi : gis) {
-                galleryMapper.insertGalleryImage(gi);
+            try{
+                for(NewGalleryImageDTO gi : gis) {
+                    galleryMapper.insertGalleryImage(gi);
+                }
+            }catch (Exception e){
+                throw new IllegalStateException("insertGalleryImg 오류 발생");
             }
             // 첨부된 파일들 중 첫번째 이미지 파일을 썸네일 처리
-            galleryUploadService.makeThumbnail(gal.getSimgname(), gis.get(0).getImgname());
+            try {
+                galleryUploadService.makeThumbnail(gal.getSimgname(), gis.get(0).getImgname());
+            }catch (Exception e){
+                throw new IllegalStateException("makeThumbnail 오류 발생");
+            }
         }
 
-        return false;
+        return result;
     }
 }
