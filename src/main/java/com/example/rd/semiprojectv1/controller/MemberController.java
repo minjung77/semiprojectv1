@@ -7,7 +7,10 @@ import com.example.rd.semiprojectv1.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,39 +58,44 @@ public class MemberController {
         return "views/member/login";
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> loginok(MemberDTO member, HttpSession session) {
-        // 회원 가입 처리시 기타 오류 발생에 대한 응답코드 설정
-        ResponseEntity<?> response = ResponseEntity.internalServerError().build();
-
-        log.info("submit 정보 : {}", member);
-
-        try{
-            // 정상 처리시 상태코드 200으로 응답
-            Member loginUser = memberService.loginMember(member);
-            session.setAttribute("loginUser", loginUser);
-            session.setMaxInactiveInterval(600); // 세션 유지 10분
-            
-            response = ResponseEntity.ok().build();
-        }catch(IllegalStateException e){
-            // 비 정상 처리시 상태코드 400으로 응답 - 클라이언트 잘못
-            // 아이디나 비밀번호 잘못 입력시
-            response = ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            // 비정상 처리시 상태코드 500으로 응답 - 서버 잘못
-            e.printStackTrace();
-        }
-        return response;
-    }
+    //스프링 시큐리티가 자동으로 처리 - 생략
+//    @PostMapping("/login")
+//    public ResponseEntity<?> loginok(MemberDTO member, HttpSession session) {
+//        // 회원 가입 처리시 기타 오류 발생에 대한 응답코드 설정
+//        ResponseEntity<?> response = ResponseEntity.internalServerError().build();
+//
+//        log.info("submit 정보 : {}", member);
+//
+//        try{
+//            // 정상 처리시 상태코드 200으로 응답
+//            Member loginUser = memberService.loginMember(member);
+//            session.setAttribute("loginUser", loginUser);
+//            session.setMaxInactiveInterval(600); // 세션 유지 10분
+//
+//            response = ResponseEntity.ok().build();
+//        }catch(IllegalStateException e){
+//            // 비 정상 처리시 상태코드 400으로 응답 - 클라이언트 잘못
+//            // 아이디나 비밀번호 잘못 입력시
+//            response = ResponseEntity.badRequest().body(e.getMessage());
+//        } catch (Exception e) {
+//            // 비정상 처리시 상태코드 500으로 응답 - 서버 잘못
+//            e.printStackTrace();
+//        }
+//        return response;
+//    }
 
     @GetMapping("/myinfo")
-    public String info(HttpSession session) {
+    public String info(Authentication authentication, Model model) {
         String returnUrl = "views/member/login";
 
-        //세션 변수가 생성되어 있다면 myinfo로 이동 가능.
-        if(session.getAttribute("loginUser") != null) {
+        //로그인 인증이 성공했다면
+        if(authentication != null && authentication.isAuthenticated()) {
+            //인증 완료된 사용자 정보(아이디)를 가져옴
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            //그 외 사용자 정보(이름, 이메일, 가입일)를 가져오기 위해 다시 사용자 테이블 조회
+            model.addAttribute("loginUser", memberService.findByUserid(userDetails));
+
             returnUrl = "views/member/myinfo";
-            System.err.println("asdfasdf         "+returnUrl);
         }
         return returnUrl;
     }
