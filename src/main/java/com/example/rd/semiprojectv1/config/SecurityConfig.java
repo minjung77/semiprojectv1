@@ -32,7 +32,7 @@ public class SecurityConfig {
                     .usernameParameter("userid") //아이디 매개변수 지정 !!
                     .passwordParameter("passwd") //비밀번호 매개변수 지정 !!
                     .defaultSuccessUrl("/member/myinfo")//로그인 성공 시 리다이텍트 url
-                    .failureUrl("/login?error=true")//로그인 실패시 리다이렉트 url
+                    .failureUrl("/member/loginfail")//로그인 실패시 리다이렉트 url
                     .permitAll()
                 .and()
                 .logout()// 로그아웃 설정

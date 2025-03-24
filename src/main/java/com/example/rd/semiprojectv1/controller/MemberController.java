@@ -106,6 +106,10 @@ public class MemberController {
         return "redirect:/";
     }
 
+    @GetMapping("/loginfail")
+    public String loginfail() {
+        return "views/member/loginfail";
+    }
 }
 
 

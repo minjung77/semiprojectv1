@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userid) throws UsernameNotFoundException {
 
-        log.info("loadUserByUsername 호출...");
+        log.info("loadUserByUsername 호출... : {}", userid);
 
         //JPA, MariaDB 를 이용해서 사용자 정보 확인
         User user = userRepository.findByuserid(userid).orElseThrow(()->new UsernameNotFoundException("사용자가 존재하지 않습니다."));
