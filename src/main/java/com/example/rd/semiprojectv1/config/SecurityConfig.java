@@ -1,5 +1,7 @@
 package com.example.rd.semiprojectv1.config;
 
+import com.example.rd.semiprojectv1.custom.CustomAuthenticationFailureHandler;
+import com.example.rd.semiprojectv1.custom.CustomAuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -16,6 +19,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
     private final UserDetailsService userDetailService;
+    private final CustomAuthenticationSuccessHandler successHandler;
+    private final CustomAuthenticationFailureHandler failureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -33,6 +38,8 @@ public class SecurityConfig {
                     .passwordParameter("passwd") //비밀번호 매개변수 지정 !!
                     .defaultSuccessUrl("/member/myinfo")//로그인 성공 시 리다이텍트 url
                     .failureUrl("/member/loginfail")//로그인 실패시 리다이렉트 url
+                    .successHandler(successHandler)
+                    .failureHandler(failureHandler)
                     .permitAll()
                 .and()
                 .logout()// 로그아웃 설정
