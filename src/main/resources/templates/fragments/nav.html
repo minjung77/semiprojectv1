@@ -1,13 +1,19 @@
 <!doctype html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <nav th:fragment="nav" role="navigation" class="navbar navbar-light bg-light">
         <ul class="nav space-between">
             <li><a href="/" class="nav-link">Home</a></li>
-            <li th:if="${session.loginUser == null}"><a href="/member/join" class="nav-link">회원가입</a></li>
-            <li th:if="${session.loginUser != null}"><a href="#" class="nav-link">회원가입</a></li>
 
-            <li th:if="${session.loginUser == null}"><a href="/member/login" class="nav-link">로그인</a></li>
-            <li th:if="${session.loginUser != null}"><a href="/member/logout" class="nav-link">로그아웃</a></li>
+            <th:block sec:authorize="isAnonymous()">
+                <li><a href="/member/join" class="nav-link">회원가입</a></li>
+                <li><a href="/member/login" class="nav-link">로그인</a></li>
+            </th:block>
+
+            <th:block sec:authorize="isAuthenticated()">
+                <li><a href="#" class="nav-link">회원가입</a></li>
+                <li><a href="/member/logout" class="nav-link">로그아웃</a></li>
+            </th:block>
 
             <li><a href="/board/list" class="nav-link">게시판</a></li>
             <li><a href="/gallery/list" class="nav-link">갤러리</a></li>

@@ -40,7 +40,7 @@ public class SecurityConfig {
                     .logoutSuccessUrl("/")// 로그아웃 성공 후 리다이렉트될 url
                     .invalidateHttpSession(true)// 세션 무효화
                     .deleteCookies("JSESSIONED")//JSESSIONID 쿠키 삭제
-                    .permitAll();
+                .permitAll();
         return http.build();
     }
 
