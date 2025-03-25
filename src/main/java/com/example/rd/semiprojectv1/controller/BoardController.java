@@ -32,7 +32,8 @@ public class BoardController {
     private final GoogleRecaptchaService googleRecaptchaService;
 
     @GetMapping("/list")
-    public String list(Model m, @RequestParam(defaultValue = "1") int cpg, HttpServletResponse response) {
+//    public String list(Model m, @RequestParam(defaultValue = "1") int cpg, HttpServletResponse response) {
+    public String list(HttpServletResponse response) {
 
         //클라이언트 캐시 제어
         response.setHeader("Chache-Control", "no-cache, no-store, must-revalidate");
@@ -43,7 +44,9 @@ public class BoardController {
 
         log.info("/board/list 호출!! ");
 
-        m.addAttribute("bdsdto", boardService.readBoard(cpg));
+//        m.addAttribute("bdsdto", boardService.readBoard(cpg));
+        //restful 방식으로 변경
+
 //        m.addAttribute("bds", boardService.readBoard(cpg));
 //        m.addAttribute("cpg", cpg);
 //        m.addAttribute("stblk", ((cpg - 1)/10) * 10 + 1);
