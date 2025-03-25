@@ -32,7 +32,7 @@ public class ApiBoardController {
     public ResponseEntity<BoardListDTO> find(String findtype, String findkey, @RequestParam(defaultValue = "1") int cpg) {
         BoardListDTO boardListDTO = boardService.findBoard(cpg, findtype, findkey);
 
-        return new ResponseEntity(boardListDTO, HttpStatus.OK);
+        return new ResponseEntity<>(boardListDTO, HttpStatus.OK);
     }
 
     @GetMapping("/view")

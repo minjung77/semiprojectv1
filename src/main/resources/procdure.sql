@@ -9,14 +9,17 @@ BEGIN
     -- 1000건의 데이터 삽입
     WHILE i <= 1000 DO
             INSERT INTO boards (title, userid, contents)
-            VALUES ('', 'abc123', '');
+            VALUES ('111', 'abc123', '444');
 INSERT INTO boards (title, userid, contents)
-VALUES ('', '987xyz', '');
+VALUES ('222', '987xyz', '555');
 INSERT INTO boards (title, userid, contents)
-VALUES ('', '냐옹냐옹', '');
+VALUES ('333', '냐옹냐옹', '666');
 SET i = i + 1;
 END WHILE;
 END;
 
 -- 프로시저 호출
 CALL insert_boards();
+
+
+delete from boards;

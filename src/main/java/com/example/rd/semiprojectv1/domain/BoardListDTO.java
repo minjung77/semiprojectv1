@@ -2,10 +2,12 @@ package com.example.rd.semiprojectv1.domain;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Data
 public class BoardListDTO {
     private int cpg;
@@ -21,5 +23,8 @@ public class BoardListDTO {
         //페이지네이션 범위 계산
         this.stblk = ((cpg - 1) / 10) * 10 + 1;
         this.edblk = Math.min(stblk + 10 - 1, cntpg);
+
+        log.info("==> {} {} {} {}", cntpg, totalItems, stblk, edblk);
+        log.info("==> {} {}", pageSize, cntpg);
     }
 }

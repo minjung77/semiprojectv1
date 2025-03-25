@@ -20,7 +20,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardListDTO readBoard(int cpg) {
-        //cpg에 따라 시작위치 계산
+        // cpg에 따라 시작위치값 계산
         int stnum = (cpg - 1) * pageSize;
         int totalItems = boardMapper.countBoard();
         List<BoardDTO> boards = boardMapper.selectBoard(stnum, pageSize);
@@ -37,11 +37,6 @@ public class BoardServiceImpl implements BoardService {
 
         return new BoardReplyDTO(bd, rps);
     }
-
-//    @Override
-//    public int countBoard() {
-//        return boardMapper.countPageBoard(pageSize);
-//    }
 
     @Override
     public BoardListDTO findBoard(int cpg, String findtype, String findkey) {
@@ -61,49 +56,40 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int countfindBoard(Map<String, Object> params) {
-//        Map<String, Object> params = new HashMap<>();
-//        params.put("pageSize", pageSize);
-//        params.put("findtype", findtype);
-//        params.put("findkey", findkey);
 
         return boardMapper.countFindBoard(params);
     }
 
-//    @Override
-//    public Board readOneBoard(int bno) {
-//        return boardMapper.selectOneSelect(bno);
-//    }
+    //@Override
+    //public Board readOneBoard(int bno) {
+    //     return boardMapper.selectOneBoard(bno);
+    //}
 
-//    @Override
-//    public void readOneView(int bno) {
-//        boardMapper.updateViewOne(bno);
-//    }
+    //@Override
+    //public void readOneView(int bno) {
+    //    boardMapper.updateViewOne(bno);
+    //}
 
     @Override
     public boolean newBoard(NewBoardDTO newBoardDTO) {
         int result = boardMapper.insertBoard(newBoardDTO);
-
         return result > 0;
     }
 
     @Override
     public boolean newReply(NewReplyDTO newReplyDTO) {
         int result = boardMapper.insertReply(newReplyDTO);
-
         return result > 0;
     }
 
-    @Override
-    public List<Reply> readReply(int pno) {
-        return boardMapper.selectReply(pno);
-    }
+    //@Override
+    //public List<Reply> readReply(int pno) {
+    //    return boardMapper.selectReply(pno);
+    //}
 
     @Override
     public boolean newComment(NewReplyDTO newReplyDTO) {
         int result = boardMapper.insertComment(newReplyDTO);
-
         return result > 0;
     }
-
-
 }

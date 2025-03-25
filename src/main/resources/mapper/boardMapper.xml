@@ -14,7 +14,7 @@
     </select>
 
     <select id="countFindBoard" parameterType="int">
-        select ceil(count(bno)/#{pageSize}) cntpg
+        select count(bno) cntpg
         from boards
         where ${findtype} like concat('%', #{findkey}, '%')
     </select>
