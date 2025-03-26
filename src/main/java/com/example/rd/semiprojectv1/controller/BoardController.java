@@ -114,6 +114,7 @@ public class BoardController {
     @PostMapping("/cmmt")
     public String cmmtok(NewReplyDTO newReplyDTO){
         String returnPage = "redirect:/board/view?bno=" + newReplyDTO.getPno();
+        log.info("{}", newReplyDTO);
 
         if(!boardService.newComment(newReplyDTO)){//댓글 insert 실패하면 에러 페이지로
             returnPage = "redirect:/board/error?type=1";
