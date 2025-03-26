@@ -25,6 +25,5 @@ public class BoardListDTO {
         this.edblk = Math.min(stblk + 10 - 1, cntpg);
 
         log.info("==> {} {} {} {}", cntpg, totalItems, stblk, edblk);
-        log.info("==> {} {}", pageSize, cntpg);
     }
 }
