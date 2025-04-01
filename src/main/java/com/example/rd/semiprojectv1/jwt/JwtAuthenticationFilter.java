@@ -36,14 +36,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         
         //1. 요청으로부터 JWT 토큰 확인
         //1a. 요청헤더에서 JWT 토큰 확인
-        log.info("check token in http header");
+        log.info(">> check token in http header");
         final String authHeader = req.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
         }
 
         //1b. 쿠키에서 JWT 토큰 확인
-        log.info("check token in http cookies");
+        log.info(">> check token in http cookies");
         if(jwt == null) {//herder에서 jwt를 찾지 못했다면
             Cookie[] cookies = req.getCookies();
             if(cookies != null) {
