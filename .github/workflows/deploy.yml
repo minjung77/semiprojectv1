@@ -1,4 +1,4 @@
-name: Build Spring Boot app with Maven amd deploy on EC2
+name: Build Spring Boot app with Maven and deploy on EC2
 
 on:
   push:
@@ -9,35 +9,35 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-#       가상 머신에 소스코드 다운로드
+      # 가상머신에 소스코드 다운로드
       - name: Checkout code
         uses: actions/checkout@v3
 
-#       JDK 17 설치
+      # JDK 17 설치
       - name: set up JDK17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
-          
-#       maven으로 자바 프로젝트 빌드
+
+      # maven으로 자바 프로젝트 빌드
       - name: build with maven
         run: mvn -B package --file pom.xml -DskipTests
-        
-#       빌드한 결과물 확인
+
+      # 빌드한 결과물 확인
       - name: list target directory
         run: ls -la target
 
-#        패키지 배포 준비
+      # 패키지 배포 준비
       - name: prepare deploy
-        run:
+        run: |
           mkdir -p deploy
           cp target/*.jar deploy/application.jar
           cp scripts/deploy.sh deploy/
           ls -al deploy
 
-#       SSH로 EC2에 파일 전송(/home/ubuntu/deploy)
-#       AWS EC2 보안그룹 상에 ssh 22 포트 접속을 개방
+      # SSH로 EC2에 파일 전송 (/home/ubuntu/deploy)
+      # AWS EC2 보안그룹 상에 ssh 22 포트 접속을 개방!
       - name: Copy files to EC2
         uses: appleboy/scp-action@master
         with:
@@ -48,7 +48,7 @@ jobs:
           target: "/home/${{ secrets.EC2_USERNAME }}"
           strip_components: 1
 
-  #     SSH로 EC2에 접속하여 배포 스크립트 실행
+      # SSH로 EC2에 접속해서 배포 스크립트 실행
       - name: Execute deployment script
         uses: appleboy/ssh-action@master
         with:
